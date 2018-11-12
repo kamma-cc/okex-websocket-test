@@ -31,6 +31,20 @@ describe('OKEx websocket 接口测试', function() {
         }
       });
     });
+    it('订阅BTC-USDT最新成交', function(done) {
+      this.timeout(60000);
+      client.subscribeSpotDeals('BTC-USDT');
+      let number = 0;
+      client.on('message', function listener(message) {
+        if (message.indexOf('ok_sub_spot_btc_usdt_deals') > -1) {
+          number++;
+          if (number > 2) {
+            done();
+            client.removeListener('message', listener);
+          }
+        }
+      });
+    });
     after(function(done) {
       client.on('close', () => done());
       client.close();
