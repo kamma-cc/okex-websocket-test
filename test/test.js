@@ -69,8 +69,6 @@ describe('OKEx websocket 接口测试', function() {
     it('登录测试', function(done) {
       client.login(process.env['V3_API_KEY'], process.env['V3_SECRET_KEY'],
           process.env['V3_PASSPHRASE']);
-      console.log(process.env['V3_API_KEY'], process.env['V3_SECRET_KEY'],
-          process.env['V3_PASSPHRASE']);
       let number = 0;
       client.on('message', function listener(message) {
         console.log(message);
