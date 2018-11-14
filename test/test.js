@@ -76,5 +76,9 @@ describe('OKEx websocket 接口测试', function() {
         }
       });
     });
+    after(function(done) {
+      client.on('close', () => done());
+      client.close();
+    });
   });
 });
