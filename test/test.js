@@ -71,7 +71,6 @@ describe('OKEx websocket 接口测试', function() {
           process.env['V3_PASSPHRASE']);
       let number = 0;
       client.on('message', function listener(message) {
-        console.log(message);
         if (message.indexOf('login') > -1 && message.indexOf('success') > -1) {
           done();
         }
