@@ -8,13 +8,15 @@
   },
   "dependencies": {
     "chai": "^4.2.0",
-    "okex-node": "0.0.7"
+    "okex-node": "0.0.8"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "dotenv": "^6.1.0"
   },
   "scripts": {
-    "test": "mocha --exit"
+    "test": "mocha --recursive --exit",
+    "okex-node-link": "npm link okex-node"
   },
   "author": "",
   "license": "ISC"
