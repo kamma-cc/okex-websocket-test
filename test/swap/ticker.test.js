@@ -16,16 +16,13 @@ describe('V3 API 推送-永续合约-行情', function() {
     it('swap/ticker:BTC-USD-SWAP', done => {
         let isSubscribed = false;
         const listener = data => {
-            const result = JSON.parse(data);
-            if (result.event === 'error') {
-                done(data);
-                return;
-            }
-            if (result.event === 'subscribe' && result.subscribe === 'swap/ticker:BTC-USD-SWAP') {
+            if (data.indexOf('subscribe') > -1 && data.indexOf('swap/ticker:BTC-USD-SWAP') > -1) {
                 console.log('subscribe success [swap/ticker:BTC-USD-SWAP]');
                 isSubscribed = true;
-            } else if (isSubscribed) {
+            } else if (isSubscribed && data.indexOf('swap/ticker') > -1) {
+                console.log(data);
                 try {
+                    const result = JSON.parse(data);
                     //
                     // {
                     // table: "swap/ticker",

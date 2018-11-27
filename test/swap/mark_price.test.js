@@ -15,17 +15,14 @@ describe('V3 API 推送-永续合约-标记价格', function () {
     it('swap/mark_price:BTC-USD-SWAP', done => {
         let isSubscribed = false;
         const listener = data => {
-            const result = JSON.parse(data);
-            if (result.event === 'error') {
-                done(data);
-                return;
-            }
             // 返回数据 {event:'subscribe', subscribe:'swap/mark_price:BTC-USD-SWAP'} 表示已订阅成功
-            if (result.event === 'subscribe' && result.subscribe === 'swap/mark_price:BTC-USD-SWAP') {
+            if (data.indexOf('subscribe') > -1 && data.indexOf('swap/mark_price:BTC-USD-SWAP') > -1) {
                 console.log(`subscribe success [swap/mark_price:BTC-USD-SWAP]`);
                 isSubscribed = true;
-            } else if (isSubscribed) {
+            } else if (isSubscribed && data.indexOf('swap/mark_price') > -1) {
+                console.log(data);
                 try {
+                    const result = JSON.parse(data);
                     expect(result).to.have.property('table');
                     expect(result.table).to.equal('swap/mark_price');
 

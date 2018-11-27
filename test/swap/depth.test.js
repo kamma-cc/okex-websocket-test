@@ -22,16 +22,13 @@ describe('V3 API 推送-永续合约-深度数据', function () {
     it('深度 5 数据 swap/depth5', function (done) {
         let isSubscribed = false;
         listener = data => {
-            const result = JSON.parse(data);
-            if (result.event === 'error') {
-                done(data);
-                return;
-            }
             // 返回数据 {event:'subscribe', subscribe:'swap/depth5:BTC-USD-SWAP'} 表示已订阅成功
-            if (result.event === 'subscribe' && result.subscribe === `swap/depth5:BTC-USD-SWAP`) {
+            if (data.indexOf('subscribe') > -1 && data.indexOf('swap/depth5:BTC-USD-SWAP') > -1) {
                 console.log('Subscribe Success [swap/depth5:BTC-USD-SWAP]')
                 isSubscribed = true;
-            } else if (isSubscribed) {
+            } else if (isSubscribed && data.indexOf('swap/depth5') > -1) {
+                console.log(data);
+                const result = JSON.parse(data);
                 expect(result).to.have.property('data');
                 expect(result.data).to.be.an.instanceof(Array);
                 expect(result.data.length).to.be.above(0);
@@ -59,16 +56,13 @@ describe('V3 API 推送-永续合约-深度数据', function () {
     it('深度 200 数据 swap/depth', function (done) {
         let isSubscribed = false;
         listener = data => {
-            const result = JSON.parse(data);
-            if (result.event === 'error') {
-                done(data);
-                return;
-            }
             // 返回数据 {event:'subscribe', subscribe:'swap/depth:BTC-USD-SWAP'} 表示已订阅成功
-            if (result.event === 'subscribe' && result.subscribe === `swap/depth:BTC-USD-SWAP`) {
-                console.log('subscribe success [swap/depth:BTC-USD-SWAP]');
+            if (data.indexOf('subscribe') > -1 && data.indexOf('swap/depth:BTC-USD-SWAP') > -1) {
+                console.log('Subscribe Success [swap/depth5:BTC-USD-SWAP]')
                 isSubscribed = true;
-            } else if (isSubscribed) {
+            } else if (isSubscribed && data.indexOf('swap/depth') > -1) {
+                console.log(data);
+                const result = JSON.parse(data);
                 // 数据属性完整性及类型校验
                 // {
                 // "table":"swap/depth",

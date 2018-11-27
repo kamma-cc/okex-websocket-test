@@ -13,6 +13,7 @@ describe('V3 API 推送-永续合约-Instruments', function() {
 
     it('getSwapInstruments', async () => {
         const instruments = await client.getSwapInstruments();
+        console.log(instruments);
         expect(instruments).to.be.a('array');
         [...instruments].forEach(item => {
             expectItem(item, 'instrument_id');

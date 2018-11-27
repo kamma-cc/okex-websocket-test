@@ -17,17 +17,14 @@ describe('V3 API 推送-永续合约-资金费率', function () {
     it('swap/funding_rate:BTC-USD-SWAP', done => {
         let isSubscribed = false;
         const listener = data => {
-            const result = JSON.parse(data);
-            if (result.event === 'error') {
-                done(data);
-                return;
-            }
             // 返回数据 {event:'subscribe', subscribe:'swap/funding_rate:BTC-USD-SWAP'} 表示已订阅成功
-            if (result.event === 'subscribe' && result.subscribe === `swap/funding_rate:BTC-USD-SWAP`) {
+            if (data.indexOf('subscribe') > -1 && data.indexOf('swap/funding_rate:BTC-USD-SWAP') > -1) {
                 console.log('subscribe success [swap/funding_rate:BTC-USD-SWAP]');
                 isSubscribed = true;
-            } else if (isSubscribed) {
+            } else if (isSubscribed && data.indexOf('swap/funding_rate') > -1) {
                 try {
+                    console.log(data);
+                    const result = JSON.parse(data);
                     // 数据属性完整性及类型校验
                     // {
                     // "table":"swap/funding_rate",

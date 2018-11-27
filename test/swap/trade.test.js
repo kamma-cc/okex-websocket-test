@@ -19,8 +19,9 @@ describe('V3 API 推送-永续合约-交易数据', function() {
             if (data.indexOf('subscribe') > -1 && data.indexOf('swap/trade:BTC-USD-SWAP') > -1) {
                 console.log('subscribe success [swap/trade:BTC-USD-SWAP]');
                 isSubscribed = true;
-            } else if (isSubscribed) {
+            } else if (isSubscribed && data.indexOf('swap/trade') > -1) {
                 try {
+                    console.log(data);
                     const result = JSON.parse(data);
                     // {
                     // "instrument_id"："BTC-USD-SWAP"，

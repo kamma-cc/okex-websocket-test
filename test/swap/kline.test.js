@@ -42,16 +42,13 @@ describe('V3 API 推送-永续合约-K-Line', () => {
             let isSubscribed = false;
 
             listener = data => {
-                const result = JSON.parse(data);
-                if (result.event === 'error') {
-                    done(data);
-                    return;
-                }
-                // 返回数据 {event:'subscribe', subscribe:'swap/cacndle60s:BTC-USD-SWAP'} 表示已订阅成功
-                if (result.event === 'subscribe' && result.subscribe === `swap/${candle}:BTC-USD-SWAP`) {
-                    console.log(`Subscribe Success [swap/${candle}:BTC-USD-SWAP]`);
+                // 返回数据 {event:'subscribe', subscribe:'swap/candle60s:BTC-USD-SWAP'} 表示已订阅成功
+                if (data.indexOf('subscribe') > -1 && data.indexOf(`swap/${candle}:BTC-USD-SWAP`) > -1) {
+                    console.log(`subscribe success [swap/${candle}:BTC-USD-SWAP]`);
                     isSubscribed = true;
-                } else if (isSubscribed) {
+                } else if (isSubscribed && data.indexOf(`swap/${candle}`) > -1) {
+                    console.log(data);
+                    const result = JSON.parse(data);
                     // expectTestCase 通过，表示测试用例成功
                     expectTestCase(result, candle);
                     done();
