@@ -25,32 +25,38 @@ describe('V3 API 推送-永续合约-限价范围', function () {
                 console.log('subscribe success [swap/price_range:BTC-USD-SWAP]');
                 isSubscribed = true;
             } else if (isSubscribed) {
-                expect(result).to.have.property('table');
-                expect(result.table).to.equal('swap/price_range');
-                expect(result).to.have.property('data');
-                expect(result.data).to.be.an.instanceof(Array);
-                expect(result.data.length).to.be.above(0);
+                try {
+                    expect(result).to.have.property('table');
+                    expect(result.table).to.equal('swap/price_range');
+                    expect(result).to.have.property('data');
+                    expect(result.data).to.be.an.instanceof(Array);
+                    expect(result.data.length).to.be.above(0);
 
-                const item = result.data[0];
-                // 合约名称
-                expect(item).to.have.property('instrument_id');
-                expect(item.instrument_id).to.equal('BTC-USD-SWAP');
-                expect(item.instrument_id).to.not.empty;
-                // 最低卖价
-                expect(item).to.have.property('lowest');
-                expect(item.lowest).to.be.a('string');
-                expect(item.lowest).to.be.not.empty;
-                // 最高买价
-                expect(item).to.have.property('highest');
-                expect(item.highest).to.be.a('string');
-                expect(item.highest).to.be.not.empty;
-                // 系统时间戳
-                expect(item).to.have.property('timestamp');
-                expect(item.timestamp).to.be.a('string');
-                expect(item.timestamp).to.be.not.empty;
+                    const item = result.data[0];
+                    // 合约名称
+                    expect(item).to.have.property('instrument_id');
+                    expect(item.instrument_id).to.equal('BTC-USD-SWAP');
+                    expect(item.instrument_id).to.not.empty;
+                    // 最低卖价
+                    expect(item).to.have.property('lowest');
+                    expect(item.lowest).to.be.a('string');
+                    expect(item.lowest).to.be.not.empty;
+                    // 最高买价
+                    expect(item).to.have.property('highest');
+                    expect(item.highest).to.be.a('string');
+                    expect(item.highest).to.be.not.empty;
+                    // 系统时间戳
+                    expect(item).to.have.property('timestamp');
+                    expect(item.timestamp).to.be.a('string');
+                    expect(item.timestamp).to.be.not.empty;
 
-                done();
-                client.removeListener('message', listener);
+                    done();
+                } catch(e) {
+                    done(e)
+                } finally {
+                    client.removeListener('message', listener);
+                }
+
             }
         }
         client.on('message', listener);

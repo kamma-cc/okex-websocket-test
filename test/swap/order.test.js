@@ -3,7 +3,7 @@ const { V3WebsocketClient } = require('okex-node');
 require('dotenv').load();
 const websocketV3Uri = process.env['V3_WS_URL'];
 
-describe('V3 API 推送-永续合约-交易详情', function () {
+describe.skip('V3 API 推送-永续合约-交易详情', function () {
 
     const client = new V3WebsocketClient(websocketV3Uri);
 

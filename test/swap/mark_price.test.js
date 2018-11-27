@@ -25,26 +25,31 @@ describe('V3 API 推送-永续合约-标记价格', function () {
                 console.log(`subscribe success [swap/mark_price:BTC-USD-SWAP]`);
                 isSubscribed = true;
             } else if (isSubscribed) {
-                expect(result).to.have.property('table');
-                expect(result.table).to.equal('swap/mark_price');
+                try {
+                    expect(result).to.have.property('table');
+                    expect(result.table).to.equal('swap/mark_price');
 
-                expect(result).to.have.property('data');
-                expect(result.data).to.be.a('Array');
-                expect(result.data.length).to.be.above(0);
+                    expect(result).to.have.property('data');
+                    expect(result.data).to.be.a('Array');
+                    expect(result.data.length).to.be.above(0);
 
-                const item = result.data[0];
+                    const item = result.data[0];
 
-                expect(item).to.have.property('instrument_id');
-                expect(item.instrument_id).to.equal('BTC-USD-SWAP');
+                    expect(item).to.have.property('instrument_id');
+                    expect(item.instrument_id).to.equal('BTC-USD-SWAP');
 
-                expect(item).to.have.property('mark_price');
-                expect(item.mark_price).to.be.a('string');
+                    expect(item).to.have.property('mark_price');
+                    expect(item.mark_price).to.be.a('string');
 
-                expect(item).to.have.property('timestamp');
-                expect(item.timestamp).to.be.a('string');
+                    expect(item).to.have.property('timestamp');
+                    expect(item.timestamp).to.be.a('string');
 
-                done();
-                client.removeListener('message', listener);
+                    done();
+                } catch(e) {
+                    done(e);
+                } finally {
+                    client.removeListener('message', listener);
+                }
             }
         }
         client.on('message', listener);

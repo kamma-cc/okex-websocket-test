@@ -20,49 +20,54 @@ describe('V3 API 推送-永续合约-交易数据', function() {
                 console.log('subscribe success [swap/trade:BTC-USD-SWAP]');
                 isSubscribed = true;
             } else if (isSubscribed) {
-                const result = JSON.parse(data);
-                // {
-                // "instrument_id"："BTC-USD-SWAP"，
-                // "trade_id": "199",
-                // "price": 25,
-                // "size": 12,
-                // "side": 1,
-                // "timestamp": "2018-10-24T20:11:443Z"
-                // },
-                expect(result).to.have.property('table');
-                expect(result.table).to.equal('swap/trade');
+                try {
+                    const result = JSON.parse(data);
+                    // {
+                    // "instrument_id"："BTC-USD-SWAP"，
+                    // "trade_id": "199",
+                    // "price": 25,
+                    // "size": 12,
+                    // "side": 1,
+                    // "timestamp": "2018-10-24T20:11:443Z"
+                    // },
+                    expect(result).to.have.property('table');
+                    expect(result.table).to.equal('swap/trade');
 
-                expect(result).to.have.property('data');
-                expect(result.data).to.be.an.instanceof(Array);
-                expect(result.data.length).to.be.above(0);
+                    expect(result).to.have.property('data');
+                    expect(result.data).to.be.an.instanceof(Array);
+                    expect(result.data.length).to.be.above(0);
 
-                const item = result.data[0];
-                //
-                expect(item).to.have.property('instrument_id');
-                expect(item.instrument_id).to.equal('BTC-USD-SWAP');
-                // 成交id
-                expect(item).to.have.property('trade_id');
-                expect(item.trade_id).to.be.a('string');
-                expect(item.trade_id).to.be.not.empty;
-                // 成交价格
-                expect(item).to.have.property('price');
-                expect(item.price).to.be.a('string');
-                expect(item.price).to.be.not.empty;
-                // 成交数量
-                expect(item).to.have.property('size');
-                expect(item.size).to.be.a('string')
-                expect(item.size).to.be.not.empty;
-                // 成交方向
-                expect(item).to.have.property('side');
-                expect(item.side).to.be.a('string');
-                expect(item.side).to.be.not.empty;
-                // 成交时间
-                expect(item).to.have.property('timestamp');
-                expect(item.timestamp).to.be.a('string');
-                expect(item.timestamp).to.be.not.empty;
+                    const item = result.data[0];
+                    //
+                    expect(item).to.have.property('instrument_id');
+                    expect(item.instrument_id).to.equal('BTC-USD-SWAP');
+                    // 成交id
+                    expect(item).to.have.property('trade_id');
+                    expect(item.trade_id).to.be.a('string');
+                    expect(item.trade_id).to.be.not.empty;
+                    // 成交价格
+                    expect(item).to.have.property('price');
+                    expect(item.price).to.be.a('string');
+                    expect(item.price).to.be.not.empty;
+                    // 成交数量
+                    expect(item).to.have.property('size');
+                    expect(item.size).to.be.a('string')
+                    expect(item.size).to.be.not.empty;
+                    // 成交方向
+                    expect(item).to.have.property('side');
+                    expect(item.side).to.be.a('string');
+                    expect(item.side).to.be.not.empty;
+                    // 成交时间
+                    expect(item).to.have.property('timestamp');
+                    expect(item.timestamp).to.be.a('string');
+                    expect(item.timestamp).to.be.not.empty;
 
-                done();
-                client.removeListener('message', listener);
+                    done();
+                } catch(e) {
+                    done(e);
+                } finally {
+                    client.removeListener('message', listener);
+                }
             }
         }
         client.on('message', listener);
