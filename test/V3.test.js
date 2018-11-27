@@ -81,7 +81,7 @@ describe('V3 websocket 业务测试', function() {
         client.unsubscribe(['swap/ticker:BTC-USD-SWAP','swap/candle60s:BTC-USD-SWAP']);
         let counter = 0;
         client.on('message', function listener(message) {
-            console.log(message)
+            console.log(message);
             if (message.indexOf('unsubscribe') > -1 && message.indexOf('swap/ticker:BTC-USD-SWAP') > -1) {
                 counter++;
             }
@@ -92,6 +92,26 @@ describe('V3 websocket 业务测试', function() {
                 done();
                 client.removeListener('message', listener);
             }
+        });
+    });
+
+    it('测试ping/pong', function(done) {
+        const client = new V3WebsocketClient(websocketV3Uri);
+        client.connect();
+        let counter = 0;
+        client.on('message', function listener(message) {
+            if (message === 'pong') {
+                counter++;
+            }
+            if (counter > 0) {
+                client.close();
+                client.removeListener('message', listener);
+            }
+        });
+        client.on('close', function listener() {
+            expect(client.interval).to.be.null;
+            done();
+            client.removeListener('close', listener);
         });
     });
 

@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "chai": "^4.2.0",
-    "okex-node": "0.0.8"
+    "okex-node": "0.0.9"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
