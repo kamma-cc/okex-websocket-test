@@ -42,6 +42,10 @@ describe('V3 API 推送-永续合约-K-Line', () => {
             let isSubscribed = false;
 
             listener = data => {
+                // 处理返回异常信息
+                if (data.indexOf('error') > -1 && data.indexOf('message') > -1 && data.indexOf('errorCode') > -1) {
+                    done(data);
+                }
                 // 返回数据 {event:'subscribe', subscribe:'swap/candle60s:BTC-USD-SWAP'} 表示已订阅成功
                 if (data.indexOf('subscribe') > -1 && data.indexOf(`swap/${candle}:BTC-USD-SWAP`) > -1) {
                     console.log(`subscribe success [swap/${candle}:BTC-USD-SWAP]`);

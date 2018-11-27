@@ -15,6 +15,10 @@ describe('V3 API 推送-永续合约-交易数据', function() {
     it('最近成交明细 swap/trade', done => {
         let isSubscribed = false;
         const listener = data => {
+            // 处理返回异常信息
+            if (data.indexOf('error') > -1 && data.indexOf('message') > -1 && data.indexOf('errorCode') > -1) {
+                done(data);
+            }
             // 返回数据 {event:'subscribe', subscribe:'swap/trade:BTC-USD-SWAP'} 表示已订阅成功
             if (data.indexOf('subscribe') > -1 && data.indexOf('swap/trade:BTC-USD-SWAP') > -1) {
                 console.log('subscribe success [swap/trade:BTC-USD-SWAP]');

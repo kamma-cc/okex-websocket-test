@@ -16,6 +16,10 @@ describe('V3 API 推送-永续合约-行情', function() {
     it('swap/ticker:BTC-USD-SWAP', done => {
         let isSubscribed = false;
         const listener = data => {
+            // 处理返回异常信息
+            if (data.indexOf('error') > -1 && data.indexOf('message') > -1 && data.indexOf('errorCode') > -1) {
+                done(data);
+            }
             if (data.indexOf('subscribe') > -1 && data.indexOf('swap/ticker:BTC-USD-SWAP') > -1) {
                 console.log('subscribe success [swap/ticker:BTC-USD-SWAP]');
                 isSubscribed = true;
